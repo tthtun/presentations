@@ -1,0 +1,29 @@
+version: '3.3'
+
+services:
+  
+  backplane-db:
+    image: backplane-db
+    environment:
+      - ACCEPT_EULA=Y
+      - sa_password=DockerCon!!!
+    networks:
+      - app-net
+
+  audit-db:
+    image: audit-db
+    networks:
+      - app-net
+
+  web-app:
+    image: chat-web:v1
+    depends_on:
+      - audit-db
+      - backplane-db
+    networks:
+      - app-net
+
+networks:
+  app-net:
+    external:
+      name: nat
